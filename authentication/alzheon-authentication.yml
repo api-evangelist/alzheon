@@ -1,0 +1,16 @@
+generated: '2026-07-31'
+method: derived
+source: openapi/alzheon-content-openapi.yml
+summary:
+  types:
+  - http
+schemes:
+- name: applicationPassword
+  type: http
+  scheme: basic
+  description: 'WordPress application passwords (HTTP Basic: username + application password).
+    Advertised by the site''s route index at https://alzheon.com/wp-admin/authorize-application.php.
+    Required only for write and administrative routes, which are not part of this document;
+    all operations here are readable anonymously.'
+  sources:
+  - openapi/alzheon-content-openapi.yml

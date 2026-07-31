@@ -1,0 +1,90 @@
+generated: '2026-07-31'
+method: probed
+source: live HTTP probes of every host in apis.yml and openapi/ servers[]
+note: >-
+  Alzheon publishes no /.well-known/ discovery surface. Every canonical path below was
+  probed anonymously on 2026-07-31 and returned 404. The 404 body is the WordPress
+  theme's HTML error page, not a JSON document — recorded here so a later run does not
+  mistake an HTML catch-all for a discovery document. No security.txt, no OIDC or OAuth
+  metadata, no api-catalog, no ai-plugin, and no A2A agent card exists at either the
+  canonical or the pre-0.3 legacy path.
+hosts_probed:
+- host: alzheon.com
+  resolves: true
+  server: nginx (WP Engine)
+- host: www.alzheon.com
+  resolves: true
+  server: nginx (WP Engine)
+- host: api.alzheon.com
+  resolves: false
+  note: no DNS record
+- host: developer.alzheon.com
+  resolves: false
+  note: no DNS record
+- host: docs.alzheon.com
+  resolves: false
+  note: no DNS record
+- host: status.alzheon.com
+  resolves: false
+  note: no DNS record
+- host: trust.alzheon.com
+  resolves: false
+  note: no DNS record
+- host: security.alzheon.com
+  resolves: false
+  note: no DNS record
+- host: mcp.alzheon.com
+  resolves: false
+  note: no DNS record
+host: https://alzheon.com
+documents:
+- path: /.well-known/security.txt
+  spec: RFC 9116
+  status: 404
+- path: /.well-known/openid-configuration
+  spec: OpenID Connect Discovery 1.0
+  status: 404
+  content_type: text/html
+- path: /.well-known/oauth-authorization-server
+  spec: RFC 8414
+  status: 404
+  content_type: text/html
+- path: /.well-known/oauth-protected-resource
+  spec: RFC 9728
+  status: 404
+  content_type: text/html
+- path: /.well-known/api-catalog
+  spec: RFC 9727
+  status: 404
+  content_type: text/html
+- path: /.well-known/ai-plugin.json
+  spec: OpenAI plugin manifest
+  status: 404
+  content_type: text/html
+- path: /.well-known/agent-card.json
+  spec: A2A 1.0.0
+  status: 404
+  content_type: text/html
+- path: /.well-known/agent.json
+  spec: A2A pre-0.3 legacy
+  status: 404
+  content_type: text/html
+other_discovery:
+- path: /robots.txt
+  status: 200
+  note: Yoast-managed; sets Crawl-delay 10 and disallows /wp-admin/
+- path: /sitemap.xml
+  status: 200
+  note: Yoast sitemap index — post-sitemap.xml, page-sitemap.xml and taxonomy sitemaps
+- path: /feed/
+  status: 200
+  content_type: application/rss+xml
+  note: RSS 2.0 feed of press releases and in-the-news items
+- path: /wp-json/
+  status: 200
+  content_type: application/json
+  note: >-
+    WordPress REST API route index — the one real machine-readable contract this company
+    serves. 15 namespaces, 311 routes. Source for openapi/alzheon-content-openapi.yml.
+- path: /llms.txt
+  status: 404
