@@ -1,0 +1,39 @@
+generated: '2026-07-31'
+method: generated
+source: openapi/alzheon-content-openapi.yml
+note: >-
+  Alzheon publishes no skills, AGENTS.md or agent guidance — a search found none, so these
+  were generated. Every operationId referenced below exists verbatim in
+  openapi/alzheon-content-openapi.yml, which was itself derived from the provider's live
+  route index. Both skills target the incidental WordPress content surface, the only
+  machine-readable contract this company serves.
+skills:
+- file: alzheon-track-press-releases.md
+  name: Track Alzheon press releases and news
+  description: >-
+    Poll Alzheon's dated corporate announcements — trial results, financings, regulatory
+    milestones, conference presentations — incrementally, using modified_after as a sync
+    cursor instead of refetching the collection.
+  api: openapi/alzheon-content-openapi.yml
+  operations: [listPosts, getPost, listCategories, listTags, listMedia]
+- file: alzheon-harvest-science-pages.md
+  name: Harvest Alzheon science, pipeline and people pages
+  description: >-
+    Pull the durable corporate content — pipeline, mechanism of action, publications,
+    posters, management team, board, expanded access policy — as structured objects with
+    their parent/child hierarchy, rather than scraping rendered HTML.
+  api: openapi/alzheon-content-openapi.yml
+  operations: [listPages, getPage, searchContent, listMedia, getApiIndex]
+cross_cutting:
+  authentication: authentication/alzheon-authentication.yml
+  conventions: conventions/alzheon-conventions.yml
+  errors: errors/alzheon-problem-types.yml
+  data_model: data-model/alzheon-data-model.yml
+  lifecycle: lifecycle/alzheon-lifecycle.yml
+caveats:
+- No authentication exists or is issued; every operation is an anonymous GET.
+- No idempotency contract and no rate-limit headers; robots.txt Crawl-delay 10 is the pacing signal.
+- Errors use the WordPress envelope, not RFC 9457.
+- >-
+  Content concerns an investigational medicine (valiltramiprosate / ALZ-801) that is not
+  approved for marketing. Skills must not present it as medical advice or an efficacy claim.

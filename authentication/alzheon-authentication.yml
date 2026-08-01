@@ -1,16 +1,65 @@
 generated: '2026-07-31'
 method: derived
-source: openapi/alzheon-content-openapi.yml
+source: >-
+  openapi/alzheon-content-openapi.yml, plus the authentication block of the live route index
+  at https://alzheon.com/wp-json/ and anonymous probes on 2026-07-31
+note: >-
+  Alzheon publishes no authentication documentation — there was no docs page to search, so
+  this stays derived. The whole public surface is anonymous: no key is issued, no signup
+  exists, and the only declared scheme is closed in practice.
 summary:
   types:
   - http
+  anonymous_read: true
+  credentials_issued_publicly: false
+  api_keys: false
+  oauth2: false
+  oidc: false
+  mtls: false
+  signup_url: null
 schemes:
 - name: applicationPassword
   type: http
   scheme: basic
-  description: 'WordPress application passwords (HTTP Basic: username + application password).
-    Advertised by the site''s route index at https://alzheon.com/wp-admin/authorize-application.php.
-    Required only for write and administrative routes, which are not part of this document;
-    all operations here are readable anonymously.'
+  rfc: RFC 7617
+  description: >-
+    WordPress application passwords (HTTP Basic — WordPress username plus a generated
+    application password). Advertised by the site's own route index under
+    authentication.application-passwords, with the authorization endpoint at
+    https://alzheon.com/wp-admin/authorize-application.php. Required only for write and
+    administrative routes, none of which are in the OpenAPI. Alzheon issues no public
+    credentials, so this scheme is declared but unreachable for third parties.
+  applies_to: write and administrative routes
+  reachable_by_third_parties: false
   sources:
   - openapi/alzheon-content-openapi.yml
+  - https://alzheon.com/wp-json/
+anonymous_access:
+  applies_to: every operation in openapi/alzheon-content-openapi.yml
+  verified: '2026-07-31'
+  detail: >-
+    All read operations were probed without any credential and returned HTTP 200.
+    Administrative routes excluded from the spec return 401 with code rest_forbidden or
+    rest_cannot_view_plugins.
+  cors:
+    allow_headers: [Authorization, X-WP-Nonce, Content-Disposition, Content-MD5, Content-Type]
+    expose_headers: [X-WP-Total, X-WP-TotalPages, Link]
+    note: >-
+      X-WP-Nonce is the cookie-authenticated browser flow used by the site's own admin
+      screens; it is not available to third-party clients.
+not_present:
+- mechanism: api-key
+  evidence: no apiKey securityScheme; no key issuance or signup page exists
+- mechanism: oauth2
+  evidence: /.well-known/oauth-authorization-server and /.well-known/oauth-protected-resource both 404
+- mechanism: openIdConnect
+  evidence: /.well-known/openid-configuration returns 404
+- mechanism: mutualTLS
+  evidence: no mTLS requirement observed
+- mechanism: jwt
+  evidence: no JWT plugin namespace present in the route index
+see_also:
+  scopes: null
+  conventions: conventions/alzheon-conventions.yml
+  domain_security: security/alzheon-domain-security.yml
+  well_known: well-known/alzheon-well-known.yml

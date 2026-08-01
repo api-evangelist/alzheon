@@ -1,0 +1,74 @@
+generated: '2026-07-31'
+method: derived
+source: >-
+  openapi/alzheon-content-openapi.yml, the live route index at https://alzheon.com/wp-json/,
+  and probes of status./trust. subdomains and common policy paths on 2026-07-31
+note: >-
+  Alzheon runs no developer programme, so there is no versioning policy, no deprecation
+  policy, no SLA and no status page to find. Every field below records a probed absence
+  rather than an assumed one. No StatusPage or Deprecation pointer is wired in apis.yml,
+  because neither exists — recording the absence is the honest result.
+versioning:
+  scheme: uri-path-namespace
+  current: wp/v2
+  policy_url: null
+  policy_published: false
+  detail: >-
+    The version is the WordPress core REST namespace, not a version Alzheon controls or
+    publishes a policy for. It changes when WordPress core changes. Plugin namespaces on
+    the same install (yoast/v1, google-site-kit/v1, contact-form-7/v1, cf7apps/v1,
+    wpe/cache-plugin/v1, post-duplicator/v1, awb) version independently and can appear or
+    disappear when the site's plugins are updated. Treat the whole surface as unversioned
+    from a consumer's point of view.
+deprecation:
+  policy_url: null
+  policy_published: false
+  sunset_header: false
+  deprecation_header: false
+  rfc8594: false
+  detail: >-
+    No Sunset or Deprecation response header was observed and no deprecation policy is
+    published. Routes can be removed without notice when a plugin is deactivated.
+deprecated_operations: []
+sla:
+  url: null
+  uptime_target: null
+  published: false
+status_page:
+  url: null
+  probed:
+  - {url: 'https://status.alzheon.com/', result: no-DNS-record}
+  - {url: 'https://alzheon.com/status', result: 404}
+  detail: >-
+    No status page. The site is hosted on WP Engine (observed x-powered-by: WP Engine);
+    WP Engine operates its own status page for platform incidents, but that is the host's,
+    not Alzheon's, and it makes no statement about this API.
+support:
+  developer_support_channel: null
+  general_contact: https://alzheon.com/contact/
+  detail: >-
+    A corporate contact form exists. There is no developer support channel, forum,
+    community or issue tracker for the API surface.
+changelog:
+  api_changelog_url: null
+  published: false
+  company_announcements: https://alzheon.com/media/press-releases/
+  detail: >-
+    Alzheon publishes dated corporate press releases (224 posts, most recent 2026-07-06 at
+    the time of probing) but no API changelog. The press-release feed is a company
+    changelog, not an API one, so no ChangeLog artifact pointer is wired.
+stability:
+  assessment: incidental
+  detail: >-
+    This is a content-management surface exposed as a side effect of running WordPress. It
+    carries no compatibility commitment, and Alzheon has given no indication it is intended
+    for third-party consumption. Consumers should pin nothing and re-read the route index
+    at GET /wp-json/ before each run.
+caching:
+  cache_control: max-age=600, must-revalidate
+retirement_risk:
+  level: high
+  reasons:
+  - The API can be disabled entirely by a single WordPress setting or security plugin.
+  - Plugin namespaces appear and disappear with site maintenance.
+  - No notice mechanism exists (no Sunset header, no changelog, no status page).

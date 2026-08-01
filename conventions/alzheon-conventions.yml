@@ -1,0 +1,188 @@
+generated: '2026-07-31'
+method: derived
+source: openapi/alzheon-content-openapi.yml + live response headers observed 2026-07-31
+note: >-
+  Alzheon publishes no API documentation, so nothing here could be searched. Every
+  convention below was derived from the provider's own live route index and from response
+  headers observed on real anonymous requests. These are WordPress REST API core
+  semantics as this site actually serves them, not a contract Alzheon has committed to.
+surface: Alzheon Content API (WordPress REST)
+base_url: https://alzheon.com/wp-json
+
+authentication:
+  style: none-required
+  anonymous_read: true
+  write_scheme: http-basic
+  detail: >-
+    Every operation in the OpenAPI is readable with no credential. Write and
+    administrative routes use WordPress application passwords over HTTP Basic; the
+    authorization endpoint advertised by the route index is
+    https://alzheon.com/wp-admin/authorize-application.php. Alzheon issues no public
+    credentials, so the write surface is effectively closed.
+  see: authentication/alzheon-authentication.yml
+
+idempotency:
+  supported: false
+  header: null
+  detail: >-
+    No idempotency key is accepted or documented. The read surface is safe by method
+    (GET only), but there is no idempotency contract for retries against writes. No
+    Idempotency pointer is wired in apis.yml because none exists.
+
+pagination:
+  style: page-number
+  parameters:
+  - name: page
+    in: query
+    type: integer
+    default: 1
+    description: Current page of the collection.
+  - name: per_page
+    in: query
+    type: integer
+    default: 10
+    minimum: 1
+    maximum: 100
+    description: Maximum number of items returned in the result set.
+  - name: offset
+    in: query
+    type: integer
+    description: Offset the result set by a specific number of items.
+    note: Available on post-type collections; not on all taxonomy collections.
+  response_headers:
+  - name: X-WP-Total
+    description: Total number of items in the unpaginated collection.
+  - name: X-WP-TotalPages
+    description: Total number of pages at the requested page size.
+  - name: Link
+    description: RFC 8288 link relations rel="next" and rel="prev".
+  observed:
+    example: GET /wp/v2/posts?per_page=1 -> X-WP-Total 224, X-WP-TotalPages 224
+    verified: '2026-07-31'
+
+ordering:
+  parameters:
+  - name: order
+    values: [asc, desc]
+    default: desc
+  - name: orderby
+    values: [author, date, id, include, modified, parent, relevance, slug, include_slugs, title]
+    default: date
+  note: The orderby enumeration is copied from the live route index for /wp/v2/posts.
+
+filtering:
+  parameters:
+  - name: search
+    description: Limit results to those matching a string.
+  - name: slug
+    description: Limit the result set to posts with one or more specific slugs.
+  - name: categories
+    description: Limit the result set to items assigned to specific category IDs.
+  - name: tags
+    description: Limit the result set to items assigned to specific tag IDs.
+  - name: after
+    description: Limit response to posts published after a given ISO 8601 date.
+  - name: before
+    description: Limit response to posts published before a given ISO 8601 date.
+  - name: modified_after
+    description: Limit response to posts modified after a given ISO 8601 date.
+  - name: modified_before
+    description: Limit response to posts modified before a given ISO 8601 date.
+  - name: include
+    description: Limit result set to specific IDs.
+  - name: exclude
+    description: Ensure result set excludes specific IDs.
+  incremental_sync: >-
+    modified_after combined with orderby=modified is the supported way to poll for
+    changed press releases without refetching the whole collection.
+
+field_shaping:
+  parameters:
+  - name: context
+    values: [view, embed, edit]
+    default: view
+    description: Scope under which the request is made; determines fields present in the response.
+  - name: _fields
+    description: >-
+      WordPress core supports comma-separated field selection via _fields on any route.
+      Not enumerated in the route index args, so it is recorded here as a core behaviour
+      rather than a declared parameter.
+  - name: _embed
+    description: >-
+      WordPress core supports _embed to inline linked resources (author, featured media,
+      terms) under the _embedded key. Same caveat as _fields.
+
+metadata:
+  supported: true
+  detail: Objects expose a meta object and a _links object (HAL-style link relations).
+
+hypermedia:
+  style: HAL-like _links
+  detail: >-
+    Every object carries a _links map with self, collection, about, author, replies,
+    wp:attachment, wp:term and curies relations. This is the site's own linking, not an
+    API Evangelist addition.
+
+versioning:
+  scheme: uri-path-namespace
+  current: wp/v2
+  namespaces_present:
+  - wp/v2
+  - oembed/1.0
+  - wp-site-health/v1
+  - wp-block-editor/v1
+  - wp-abilities/v1
+  - yoast/v1
+  - google-site-kit/v1
+  - contact-form-7/v1
+  - cf7apps/v1
+  - awb
+  - awb/instagram
+  - wpe/cache-plugin/v1
+  - wpe_sign_on_plugin/v1
+  - post-duplicator/v1
+  - MtphrPostDuplicatorSettings/v1
+  detail: >-
+    Version is carried in the namespace segment of the path. Alzheon publishes no
+    versioning policy; the namespace tracks whatever WordPress core and the installed
+    plugins expose.
+  see: lifecycle/alzheon-lifecycle.yml
+
+error_envelope:
+  format: wordpress-rest
+  rfc9457: false
+  media_type: application/json
+  shape:
+    code: machine-readable string, e.g. rest_post_invalid_id
+    message: human-readable string
+    data.status: integer HTTP status
+  observed:
+    request: GET /wp/v2/posts/99999999
+    status: 404
+    body: '{"code":"rest_post_invalid_id","message":"Invalid post ID.","data":{"status":404}}'
+  see: errors/alzheon-problem-types.yml
+
+rate_limiting:
+  headers: none
+  documented_limits: none
+  detail: >-
+    No rate-limit headers are returned and no limits are published. robots.txt sets
+    Crawl-delay 10, which is the only throttling signal the site emits; clients should
+    treat that as the intended pacing.
+
+caching:
+  cache_control: max-age=600, must-revalidate
+  detail: Responses are cached by WP Engine's edge for ten minutes.
+
+cors:
+  access_control_allow_headers: [Authorization, X-WP-Nonce, Content-Disposition, Content-MD5, Content-Type]
+  access_control_expose_headers: [X-WP-Total, X-WP-TotalPages, Link]
+  detail: Pagination headers are explicitly exposed to browser clients.
+
+indexing:
+  x_robots_tag: noindex
+  detail: The API responses are marked noindex; only the rendered site is indexable.
+
+request_tracing:
+  request_id_header: none
+  detail: No correlation or request-id header is returned.

@@ -1,18 +1,74 @@
 aid: alzheon
 name: Alzheon
-description: 'Alzheon is a company surfaced via the API Evangelist harvest backlog (source: secondary-market)
-  and added to the network as a stub for full-pipeline profiling.'
+description: 'Alzheon, Inc. is a privately held clinical-stage biopharmaceutical company
+  founded in 2013 and headquartered at 111 Speen Street, Framingham, Massachusetts,
+  developing oral small-molecule therapeutics and diagnostics for Alzheimer''s disease
+  and other neurodegenerative disorders. Its lead candidate, valiltramiprosate (ALZ-801)
+  — a valine-conjugated prodrug of tramiprosate that blocks the formation of neurotoxic
+  soluble beta-amyloid oligomers — has FDA Fast Track designation and completed the
+  pivotal APOLLOE4 Phase 3 trial in APOE4/4 homozygotes with early Alzheimer''s disease.
+  Alzheon operates no product or developer API and publishes no developer portal, SDKs
+  or API documentation; its corporate site does serve the standard WordPress REST API
+  anonymously, which makes its press releases, science pages and media library machine-readable.'
 url: https://raw.githubusercontent.com/api-evangelist/alzheon/refs/heads/main/apis.yml
+image: https://alzheon.com/wp-content/uploads/2016/03/alzheon-logo2.svg
 x-type: company
 x-source: harvest:secondary-market
-x-tier: stub
-x-tier-reason: harvest
+x-tier: profiled
+x-tier-reason: enrichment-pipeline-2026-07-31
+x-sector: biotechnology
+x-api-posture: no-product-api
 specificationVersion: '0.20'
 created: '2026-07-31'
 modified: '2026-07-31'
 tags:
 - Company
-apis: []
+- Biotechnology
+- Pharmaceuticals
+- Life Sciences
+- Clinical Trials
+- Alzheimer's Disease
+- Neurology
+- Drug Development
+- Healthcare
+- Private Company
+apis:
+- name: Alzheon Content API (WordPress REST)
+  description: 'Read-only, anonymously accessible WordPress REST API served by the Alzheon
+    corporate site at https://alzheon.com/wp-json. It exposes the company''s press releases
+    and in-the-news items (224 posts), static science / pipeline / people / patients pages
+    (25), the media library (624 items), taxonomies, cross-content search and oEmbed. This
+    is an incidental content management surface, not a first-party API product: Alzheon
+    publishes no developer documentation, keys, SDKs, support channel or terms of use for
+    it, and all administrative and write routes return 401 to anonymous callers.'
+  humanURL: https://alzheon.com/media/press-releases/
+  baseURL: https://alzheon.com/wp-json
+  tags:
+  - Content
+  - Press Releases
+  - WordPress
+  - CMS
+  properties:
+  - type: OpenAPI
+    url: openapi/alzheon-content-openapi.yml
+  - type: Overlay
+    url: overlays/alzheon-content-overlay.yaml
+  - type: Authentication
+    url: authentication/alzheon-authentication.yml
+  - type: Conventions
+    url: conventions/alzheon-conventions.yml
+  - type: ErrorCatalog
+    url: errors/alzheon-problem-types.yml
+  - type: DataModel
+    url: data-model/alzheon-data-model.yml
+  - type: Lifecycle
+    url: lifecycle/alzheon-lifecycle.yml
+  - type: Conformance
+    url: conformance/alzheon-conformance.yml
+  - type: AgentSkill
+    url: skills/_index.yml
+  - type: BlogRSS
+    url: https://alzheon.com/feed/
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
@@ -20,4 +76,50 @@ maintainers:
   email: info@apis.io
 common:
 - type: Website
+  url: https://alzheon.com/
+- type: Blog
+  url: https://alzheon.com/media/press-releases/
+- type: BlogRSS
+  url: https://alzheon.com/feed/
+- type: News
+  url: https://alzheon.com/media/in-the-news/
+- type: PrivacyPolicy
+  url: https://alzheon.com/privacy-policy/
+- type: Contact
+  url: https://alzheon.com/contact/
+- type: Careers
+  url: https://alzheon.com/careers/
+- type: About
+  url: https://alzheon.com/people/about-us/
+- type: Pipeline
+  url: https://alzheon.com/science/pipeline/
+- type: Publications
+  url: https://alzheon.com/science/publications/
+- type: LinkedIn
+  url: https://www.linkedin.com/company/alzheon
+- type: Twitter
+  url: https://x.com/Alzheon
+- type: SecondaryMarket
   url: https://forgeglobal.com/alzheon_stock/
+- type: WellKnown
+  url: well-known/alzheon-well-known.yml
+- type: DomainSecurity
+  url: security/alzheon-domain-security.yml
+- type: AgentSkill
+  url: skills/_index.yml
+- type: LLMsTxt
+  url: llms/alzheon-llms.txt
+x-enrichment:
+  date: '2026-07-31'
+  status: enriched
+  artifacts_added: 14
+  pass: local-v1
+  notes: >-
+    No product API. Contract discovery probed alzheon.com and www.alzheon.com plus seven
+    non-resolving subdomains for OpenAPI, GraphQL, MCP tools/list, A2A agent cards and the
+    full /.well-known/ set — all 404 or NXDOMAIN. The one real machine-readable contract
+    found is the site's anonymous WordPress REST API at https://alzheon.com/wp-json (15
+    namespaces, 311 routes); an OpenAPI 3.1 covering 24 verified anonymous read operations
+    was derived from that live route index. No packages, MCP server, agent card, OAuth
+    scopes, vulnerability-disclosure programme or trust center exist; those artifacts were
+    deliberately not written rather than stubbed.

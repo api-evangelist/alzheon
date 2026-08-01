@@ -1,0 +1,121 @@
+generated: '2026-07-31'
+method: derived
+source: >-
+  openapi/alzheon-content-openapi.yml, live response headers, and probes of
+  /.well-known/* on 2026-07-31
+note: >-
+  Alzheon publishes no compliance or standards claims anywhere on its public site, so
+  nothing here was searched from a provider assertion — every entry is derived from what
+  the surface observably does. `conforms: false` is a recorded observation, not a judgement
+  of the company. No Compliance pointer is wired in apis.yml because Alzheon publishes no
+  certifications, trust center or compliance programme (probe-security-programs.py returned
+  vdp=none trust=none on 2026-07-31).
+standards:
+- id: openapi-3.1
+  conforms: true
+  evidence: >-
+    openapi/alzheon-content-openapi.yml is a valid OpenAPI 3.1.0 document — but it was
+    derived by API Evangelist from the provider's route index, not published by Alzheon.
+  published_by_provider: false
+- id: rest
+  conforms: true
+  evidence: Resource-oriented URIs, HTTP verbs, JSON representations, HAL-style _links.
+- id: rfc8288-web-linking
+  conforms: true
+  evidence: Collection responses return Link headers with rel="next" / rel="prev".
+- id: rfc9457-problem-details
+  conforms: false
+  evidence: >-
+    Errors use the WordPress envelope {code, message, data.status} with media type
+    application/json; no application/problem+json and no type URI.
+- id: rfc9116-security-txt
+  conforms: false
+  evidence: https://alzheon.com/.well-known/security.txt returns 404.
+- id: rfc9727-api-catalog
+  conforms: false
+  evidence: /.well-known/api-catalog returns 404.
+- id: oauth2
+  conforms: false
+  evidence: >-
+    No oauth2 securityScheme. /.well-known/oauth-authorization-server and
+    /.well-known/oauth-protected-resource both 404.
+- id: oidc
+  conforms: false
+  evidence: /.well-known/openid-configuration returns 404.
+- id: http-basic-rfc7617
+  conforms: true
+  evidence: >-
+    Write routes use WordPress application passwords over HTTP Basic, advertised in the
+    route index authentication block. Read routes require no credential.
+- id: cors
+  conforms: true
+  evidence: >-
+    Access-Control-Allow-Headers and Access-Control-Expose-Headers are set;
+    X-WP-Total, X-WP-TotalPages and Link are exposed to browser clients.
+- id: tls-1.3
+  conforms: true
+  evidence: 'security/alzheon-domain-security.yml: TLSv1.3 on alzheon.com.'
+- id: hsts
+  conforms: true
+  evidence: 'security/alzheon-domain-security.yml: HSTS present, max-age 63072000.'
+- id: dnssec
+  conforms: false
+  evidence: 'security/alzheon-domain-security.yml: dnssec false for alzheon.com.'
+- id: caa
+  conforms: false
+  evidence: 'security/alzheon-domain-security.yml: no CAA records for alzheon.com.'
+- id: spf
+  conforms: true
+  evidence: 'security/alzheon-domain-security.yml: SPF record present.'
+- id: dmarc
+  conforms: true
+  evidence: 'security/alzheon-domain-security.yml: DMARC present with policy reject.'
+- id: rfc8594-sunset-header
+  conforms: false
+  evidence: No Sunset or Deprecation header observed; no deprecation policy published.
+- id: idempotency-key
+  conforms: false
+  evidence: No idempotency key header is accepted or documented.
+- id: a2a-agent-card
+  conforms: false
+  evidence: >-
+    /.well-known/agent-card.json and /.well-known/agent.json both 404 on alzheon.com and
+    www.alzheon.com.
+- id: mcp
+  conforms: false
+  evidence: No MCP server published; mcp.alzheon.com does not resolve.
+- id: llms-txt
+  conforms: false
+  evidence: https://alzheon.com/llms.txt returns 404 (a generated one lives in llms/).
+- id: oembed
+  conforms: true
+  evidence: /oembed/1.0/embed returns 200 and serves oEmbed representations.
+- id: rss-2.0
+  conforms: true
+  evidence: https://alzheon.com/feed/ returns 200 with application/rss+xml.
+- id: sitemaps-xml
+  conforms: true
+  evidence: https://alzheon.com/sitemap.xml returns a Yoast sitemap index.
+- id: fhir-r4
+  conforms: false
+  evidence: >-
+    Not applicable — no clinical or patient data surface. Alzheon is a drug developer, not
+    a care provider or health-data platform.
+- id: hipaa
+  conforms: false
+  evidence: >-
+    No claim published and no protected health information is exposed by this surface.
+    Absence of a claim is not a statement about the company's internal clinical operations.
+regulatory_context:
+  note: >-
+    Alzheon is a clinical-stage sponsor of FDA-regulated investigational products
+    (valiltramiprosate / ALZ-801, FDA Fast Track). That regulatory posture governs its drug
+    development, not this content API, and none of it is expressed through a machine-readable
+    interface. Recorded here so the absence of health-IT standards above is read correctly.
+  clinical_trial_registrations:
+  - NCT04770220
+  - NCT06304883
+  - NCT04693520
+  - NCT04157712
+  - NCT04585347
+  source: https://clinicaltrials.gov/api/v2/studies?query.spons=Alzheon

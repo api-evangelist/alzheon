@@ -1,0 +1,141 @@
+generated: '2026-07-31'
+method: derived
+source: >-
+  openapi/alzheon-content-openapi.yml and the live route index / sample payloads observed
+  at https://alzheon.com/wp-json on 2026-07-31
+note: >-
+  Entity graph of the WordPress content model as this site actually exposes it. Relationships
+  were derived from the id-reference fields present in real responses (author, categories,
+  tags, featured_media, parent, post) and from the taxonomy registration returned by
+  /wp/v2/taxonomies — not from a published object reference, because Alzheon publishes none.
+id_scheme:
+  type: integer
+  prefixed: false
+  detail: >-
+    All objects use bare auto-increment integers, unique within a post type or taxonomy
+    rather than globally. There are no typed id prefixes, so an id alone does not identify
+    its entity — always carry the collection with it.
+entities:
+- name: Post
+  route: /wp/v2/posts
+  operations: [listPosts, getPost]
+  count_observed: 224
+  description: >-
+    Press releases and in-the-news items. This is the substantive content of the site: the
+    company's dated announcements about ALZ-801 / valiltramiprosate trials, financings,
+    conference presentations and board appointments.
+  key_fields: [id, date, date_gmt, modified, modified_gmt, slug, status, link, title,
+    content, excerpt, author, featured_media, categories, tags, format, meta, _links]
+  relationships:
+  - {type: belongs_to, target: User, via: author}
+  - {type: has_one, target: Media, via: featured_media}
+  - {type: has_many, target: Category, via: categories}
+  - {type: has_many, target: Tag, via: tags}
+  - {type: has_many, target: Comment, via: 'Comment.post'}
+- name: Page
+  route: /wp/v2/pages
+  operations: [listPages, getPage]
+  count_observed: 25
+  description: >-
+    Static site pages — science, mechanism of action, pipeline, publications, posters,
+    people (management, board, scientific advisory board), patients, careers, contact,
+    privacy policy.
+  key_fields: [id, date, slug, status, link, title, content, excerpt, author, featured_media,
+    parent, menu_order, template, meta, _links]
+  relationships:
+  - {type: belongs_to, target: User, via: author}
+  - {type: has_one, target: Media, via: featured_media}
+  - {type: belongs_to, target: Page, via: parent, note: pages nest (e.g. science/pipeline)}
+- name: Media
+  route: /wp/v2/media
+  operations: [listMedia, getMedia]
+  count_observed: 624
+  description: >-
+    The media library: logos, team headshots, conference posters and publication assets.
+  key_fields: [id, date, slug, link, title, author, media_type, mime_type, source_url,
+    media_details, alt_text, post, _links]
+  relationships:
+  - {type: belongs_to, target: User, via: author}
+  - {type: belongs_to, target: Post, via: post, note: the object the file was uploaded to}
+- name: Category
+  route: /wp/v2/categories
+  operations: [listCategories, getCategory]
+  count_observed: 10
+  taxonomy: category
+  hierarchical: true
+  description: Hierarchical classification applied to posts.
+  key_fields: [id, count, description, link, name, slug, taxonomy, parent, _links]
+  relationships:
+  - {type: belongs_to, target: Category, via: parent}
+  - {type: has_many, target: Post, via: 'Post.categories'}
+- name: Tag
+  route: /wp/v2/tags
+  operations: [listTags, getTag]
+  count_observed: 28
+  taxonomy: post_tag
+  hierarchical: false
+  description: Flat keyword classification applied to posts.
+  key_fields: [id, count, description, link, name, slug, taxonomy, _links]
+  relationships:
+  - {type: has_many, target: Post, via: 'Post.tags'}
+- name: PortfolioItem
+  route: /wp/v2/avada_portfolio
+  operations: [listPortfolioItems, getPortfolioItem]
+  count_observed: 4
+  description: >-
+    Avada theme portfolio custom post type. Four items present; a theme construct rather
+    than a curated Alzheon content type.
+  relationships:
+  - {type: belongs_to, target: User, via: author}
+  - {type: has_many, target: PortfolioCategory, via: portfolio_category}
+- name: FaqEntry
+  route: /wp/v2/avada_faq
+  operations: [listFaqs, getFaq]
+  count_observed: 0
+  description: Avada theme FAQ custom post type. Registered but empty.
+- name: User
+  route: /wp/v2/users
+  operations: [listUsers, getUser]
+  count_observed: 1
+  description: >-
+    Publicly listed content authors. One author account is exposed; it is a site editorial
+    account, not a directory of Alzheon staff.
+  key_fields: [id, name, url, description, link, slug, avatar_urls, _links]
+  relationships:
+  - {type: has_many, target: Post, via: 'Post.author'}
+  - {type: has_many, target: Page, via: 'Page.author'}
+- name: Comment
+  route: /wp/v2/comments
+  operations: [listComments, getComment]
+  count_observed: 0
+  description: Comments. The collection is empty; the site does not run comments.
+  relationships:
+  - {type: belongs_to, target: Post, via: post}
+  - {type: belongs_to, target: Comment, via: parent}
+- name: PortfolioCategory
+  route: /wp/v2/portfolio_category
+  taxonomy: portfolio_category
+  description: >-
+    Taxonomy for portfolio items. Present in the route index; not included in the OpenAPI
+    because it carries no meaningful content on this site.
+metadata_entities:
+- name: Type
+  route: /wp/v2/types
+  operation: listTypes
+  description: Registered post types and their REST base paths.
+- name: Taxonomy
+  route: /wp/v2/taxonomies
+  operation: listTaxonomies
+  description: Registered taxonomies and the post types they apply to.
+- name: Status
+  route: /wp/v2/statuses
+  operation: listStatuses
+  description: Registered post statuses.
+relationship_traversal:
+  mechanism: _links + _embed
+  detail: >-
+    Every object carries a _links map (self, collection, author, replies, wp:featuredmedia,
+    wp:attachment, wp:term). Appending _embed to a request inlines those linked objects under
+    _embedded, which resolves author, featured media and terms in a single round trip instead
+    of one call per relationship.
+render: null

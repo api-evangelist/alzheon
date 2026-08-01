@@ -1,0 +1,94 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements for the Alzheon Content API
+  version: 1.0.0
+extends: openapi/alzheon-content-openapi.yml
+x-apievangelist:
+  generated: '2026-07-31'
+  method: generated
+  source: >-
+    API Evangelist enrichment pipeline, 2026-07-31. Captures the annotations we add on top
+    of the spec derived from https://alzheon.com/wp-json/ without mutating that derivation.
+  note: >-
+    The base document is itself derived, not published by Alzheon. This overlay carries only
+    API Evangelist judgements — provenance, posture, consumption guidance and cross-links to
+    the sibling artifacts in this repository — so that the derived spec stays a faithful
+    projection of the provider's route index.
+actions:
+- target: $.info
+  update:
+    x-apievangelist-rating-context: >-
+      Scored as an incidental content surface. Alzheon operates no developer programme:
+      no portal, documentation, SDKs, CLI, sandbox, Postman collection, status page,
+      changelog, support channel, MCP server or agent card exist. The absence is recorded
+      rather than inferred — see well-known/alzheon-well-known.yml for the probe log.
+    x-apievangelist-artifacts:
+      authentication: authentication/alzheon-authentication.yml
+      conventions: conventions/alzheon-conventions.yml
+      errors: errors/alzheon-problem-types.yml
+      data_model: data-model/alzheon-data-model.yml
+      lifecycle: lifecycle/alzheon-lifecycle.yml
+      conformance: conformance/alzheon-conformance.yml
+      well_known: well-known/alzheon-well-known.yml
+      domain_security: security/alzheon-domain-security.yml
+      skills: skills/_index.yml
+      llms: llms/alzheon-llms.txt
+    x-apievangelist-provenance:
+      derived_from: https://alzheon.com/wp-json/
+      derived_on: '2026-07-31'
+      publisher: API Evangelist
+      provider_published_spec: false
+- target: $.info.license
+  update:
+    name: Not published
+    x-note: >-
+      Alzheon publishes a privacy policy but no terms of use and no API licence. Content
+      returned by this API is the company's copyrighted material; consumption terms are
+      undefined. Attribute the source and do not redistribute wholesale.
+- target: $.servers[0]
+  update:
+    x-rate-limit-guidance: >-
+      No rate-limit headers are emitted and no limits are published. robots.txt sets
+      Crawl-delay 10 — pace requests at no more than one every ten seconds and honour the
+      ten-minute Cache-Control window.
+    x-caching: max-age=600, must-revalidate
+- target: $.paths['/wp/v2/posts'].get
+  update:
+    x-apievangelist-primary: true
+    x-apievangelist-note: >-
+      The highest-value operation on this surface: Alzheon's dated corporate announcements
+      about ALZ-801 / valiltramiprosate trial results, financings, regulatory milestones and
+      conference presentations. 224 items at the time of derivation.
+    x-incremental-sync: >-
+      Poll with modified_after set to the last sync timestamp and orderby=modified,
+      order=asc to page only what changed.
+- target: $.paths['/wp/v2/pages'].get
+  update:
+    x-apievangelist-note: >-
+      The durable science and corporate pages — pipeline, mechanism of action, publications,
+      posters, management team, board of directors, scientific advisory board, expanded
+      access policy, careers.
+- target: $.paths['/wp/v2/search'].get
+  update:
+    x-apievangelist-note: >-
+      Cross-content-type search. Returns lightweight stubs (id, title, url, type, subtype);
+      follow the returned url or refetch by id on the typed collection for the full object.
+- target: $.tags[?(@.name=='Comments')]
+  update:
+    x-apievangelist-note: Registered but empty — the site publishes no comments.
+- target: $.tags[?(@.name=='FAQ')]
+  update:
+    x-apievangelist-note: Avada theme construct, registered but empty.
+- target: $.components.schemas.Object
+  update:
+    x-apievangelist-note: >-
+      Deliberately loose. The provider's route index declares per-route arguments but not
+      response schemas; the authoritative per-route schema is served by an OPTIONS request
+      against the route. Padding this with invented properties would misrepresent the
+      contract, so it stays open.
+- target: $.components.securitySchemes.applicationPassword
+  update:
+    x-apievangelist-note: >-
+      Present in the contract but closed in practice — Alzheon issues no public credentials,
+      so every write and administrative route is unreachable. All operations in this
+      document are anonymous reads.

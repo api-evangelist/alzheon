@@ -1,0 +1,97 @@
+generated: '2026-07-31'
+method: derived
+source: openapi/alzheon-content-openapi.yml + live error responses observed 2026-07-31
+format: wordpress-rest
+rfc9457: false
+note: >-
+  Alzheon publishes no error reference — there was nothing to search. The envelope and the
+  codes below were derived from the OpenAPI derived from the provider's live route index,
+  and confirmed by issuing real anonymous requests that provoked each error. Codes marked
+  observed:true were returned verbatim by the live API on 2026-07-31; the rest are WordPress
+  REST core codes reachable on this surface but not provoked during the probe, and are
+  labelled as such rather than presented as verified.
+envelope:
+  media_type: application/json
+  fields:
+    code: Machine-readable error code string.
+    message: Human-readable error message.
+    data.status: Integer HTTP status code, duplicated in the body.
+  example: '{"code":"rest_post_invalid_id","message":"Invalid post ID.","data":{"status":404}}'
+  deviation_from_rfc9457: >-
+    No application/problem+json media type, no type URI, no title/detail/instance members.
+    Agents must read data.status rather than a problem type URI to classify a failure.
+problems:
+- code: rest_post_invalid_id
+  status: 404
+  title: Invalid post ID
+  message: Invalid post ID.
+  observed: true
+  source_operation: openapi/alzheon-content-openapi.yml#getPost
+  remediation: >-
+    The numeric id does not correspond to a published object of that type. List the
+    collection first and use an id returned there.
+- code: rest_forbidden
+  status: 401
+  title: Not allowed
+  message: Sorry, you are not allowed to do that.
+  observed: true
+  source_operation: 'GET /wp/v2/settings (excluded from the OpenAPI as non-public)'
+  remediation: >-
+    The route requires authenticated WordPress credentials. Alzheon issues none publicly —
+    treat the route as closed rather than retrying with a key.
+- code: rest_cannot_view_plugins
+  status: 401
+  title: Cannot manage plugins
+  message: Sorry, you are not allowed to manage plugins for this site.
+  observed: true
+  source_operation: 'GET /wp/v2/plugins (excluded from the OpenAPI as non-public)'
+  remediation: Administrative route; not part of the public surface.
+- code: rest_invalid_param
+  status: 400
+  title: Invalid parameter
+  observed: false
+  source_operation: any collection operation
+  remediation: >-
+    A query parameter failed validation against the type/enum/min/max declared in the route
+    index — for example per_page above 100 or an orderby value outside the enumeration.
+    Correct the value against openapi/alzheon-content-openapi.yml.
+- code: rest_post_invalid_page_number
+  status: 400
+  title: Page number out of range
+  observed: false
+  source_operation: any collection operation
+  remediation: >-
+    page exceeded X-WP-TotalPages. Read the header from the first response and stop paging
+    at that boundary.
+- code: rest_no_route
+  status: 404
+  title: No route matched
+  observed: false
+  source_operation: any
+  remediation: >-
+    The path or namespace does not exist on this install. Re-read the route index at
+    GET /wp-json/ rather than guessing paths.
+- code: rest_user_invalid_id
+  status: 404
+  title: Invalid user ID
+  observed: false
+  source_operation: openapi/alzheon-content-openapi.yml#getUser
+  remediation: The author id does not exist or is not publicly listed.
+- code: rest_term_invalid
+  status: 404
+  title: Invalid term ID
+  observed: false
+  source_operation: openapi/alzheon-content-openapi.yml#getCategory
+  remediation: The taxonomy term id does not exist.
+- code: oembed_invalid_url
+  status: 404
+  title: Invalid oEmbed URL
+  observed: false
+  source_operation: openapi/alzheon-content-openapi.yml#getOEmbed
+  remediation: The url parameter must be a resolvable alzheon.com URL.
+retry_guidance:
+  retryable_statuses: [502, 503, 504]
+  non_retryable_statuses: [400, 401, 404]
+  backoff: >-
+    No rate-limit headers are emitted. robots.txt sets Crawl-delay 10; use that as the
+    baseline pacing and exponential backoff on 5xx.
