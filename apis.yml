@@ -33,26 +33,16 @@ tags:
 - Healthcare
 - Private Company
 apis:
-- name: Alzheon Content API (WordPress REST)
-  description: 'Read-only, anonymously accessible WordPress REST API served by the Alzheon
-    corporate site at https://alzheon.com/wp-json. It exposes the company''s press releases
-    and in-the-news items (224 posts), static science / pipeline / people / patients pages
-    (25), the media library (624 items), taxonomies, cross-content search and oEmbed. This
-    is an incidental content management surface, not a first-party API product: Alzheon
-    publishes no developer documentation, keys, SDKs, support channel or terms of use for
-    it, and all administrative and write routes return 401 to anonymous callers.'
+- aid: alzheon:alzheon-comments-api
+  name: Alzheon Comments API
+  description: Comments (the site publishes none).
   humanURL: https://alzheon.com/media/press-releases/
   baseURL: https://alzheon.com/wp-json
   tags:
-  - Content
-  - Press Releases
-  - WordPress
-  - CMS
+  - Comments
   properties:
   - type: OpenAPI
-    url: openapi/alzheon-content-openapi.yml
-  - type: Overlay
-    url: overlays/alzheon-content-overlay.yaml
+    url: openapi/alzheon-comments-api-openapi.yml
   - type: Authentication
     url: authentication/alzheon-authentication.yml
   - type: Conventions
@@ -65,8 +55,270 @@ apis:
     url: lifecycle/alzheon-lifecycle.yml
   - type: Conformance
     url: conformance/alzheon-conformance.yml
-  - type: AgentSkill
-    url: skills/_index.yml
+  - type: BlogRSS
+    url: https://alzheon.com/feed/
+- aid: alzheon:alzheon-discovery-api
+  name: Alzheon Discovery API
+  description: The route index / discovery document.
+  humanURL: https://alzheon.com/media/press-releases/
+  baseURL: https://alzheon.com/wp-json
+  tags:
+  - Discovery
+  properties:
+  - type: OpenAPI
+    url: openapi/alzheon-discovery-api-openapi.yml
+  - type: Authentication
+    url: authentication/alzheon-authentication.yml
+  - type: Conventions
+    url: conventions/alzheon-conventions.yml
+  - type: ErrorCatalog
+    url: errors/alzheon-problem-types.yml
+  - type: DataModel
+    url: data-model/alzheon-data-model.yml
+  - type: Lifecycle
+    url: lifecycle/alzheon-lifecycle.yml
+  - type: Conformance
+    url: conformance/alzheon-conformance.yml
+  - type: BlogRSS
+    url: https://alzheon.com/feed/
+- aid: alzheon:alzheon-faq-api
+  name: Alzheon FAQ API
+  description: Avada FAQ custom post type.
+  humanURL: https://alzheon.com/media/press-releases/
+  baseURL: https://alzheon.com/wp-json
+  tags:
+  - FAQ
+  properties:
+  - type: OpenAPI
+    url: openapi/alzheon-faq-api-openapi.yml
+  - type: Authentication
+    url: authentication/alzheon-authentication.yml
+  - type: Conventions
+    url: conventions/alzheon-conventions.yml
+  - type: ErrorCatalog
+    url: errors/alzheon-problem-types.yml
+  - type: DataModel
+    url: data-model/alzheon-data-model.yml
+  - type: Lifecycle
+    url: lifecycle/alzheon-lifecycle.yml
+  - type: Conformance
+    url: conformance/alzheon-conformance.yml
+  - type: BlogRSS
+    url: https://alzheon.com/feed/
+- aid: alzheon:alzheon-media-api
+  name: Alzheon Media API
+  description: 'The media library: images, posters, publication PDFs.'
+  humanURL: https://alzheon.com/media/press-releases/
+  baseURL: https://alzheon.com/wp-json
+  tags:
+  - Media
+  properties:
+  - type: OpenAPI
+    url: openapi/alzheon-media-api-openapi.yml
+  - type: Authentication
+    url: authentication/alzheon-authentication.yml
+  - type: Conventions
+    url: conventions/alzheon-conventions.yml
+  - type: ErrorCatalog
+    url: errors/alzheon-problem-types.yml
+  - type: DataModel
+    url: data-model/alzheon-data-model.yml
+  - type: Lifecycle
+    url: lifecycle/alzheon-lifecycle.yml
+  - type: Conformance
+    url: conformance/alzheon-conformance.yml
+  - type: BlogRSS
+    url: https://alzheon.com/feed/
+- aid: alzheon:alzheon-metadata-api
+  name: Alzheon Metadata API
+  description: Registered types, taxonomies and statuses.
+  humanURL: https://alzheon.com/media/press-releases/
+  baseURL: https://alzheon.com/wp-json
+  tags:
+  - Metadata
+  properties:
+  - type: OpenAPI
+    url: openapi/alzheon-metadata-api-openapi.yml
+  - type: Authentication
+    url: authentication/alzheon-authentication.yml
+  - type: Conventions
+    url: conventions/alzheon-conventions.yml
+  - type: ErrorCatalog
+    url: errors/alzheon-problem-types.yml
+  - type: DataModel
+    url: data-model/alzheon-data-model.yml
+  - type: Lifecycle
+    url: lifecycle/alzheon-lifecycle.yml
+  - type: Conformance
+    url: conformance/alzheon-conformance.yml
+  - type: BlogRSS
+    url: https://alzheon.com/feed/
+- aid: alzheon:alzheon-oembed-api
+  name: Alzheon O Embed API
+  description: oEmbed representations of alzheon.com URLs.
+  humanURL: https://alzheon.com/media/press-releases/
+  baseURL: https://alzheon.com/wp-json
+  tags:
+  - oEmbed
+  properties:
+  - type: OpenAPI
+    url: openapi/alzheon-oembed-api-openapi.yml
+  - type: Authentication
+    url: authentication/alzheon-authentication.yml
+  - type: Conventions
+    url: conventions/alzheon-conventions.yml
+  - type: ErrorCatalog
+    url: errors/alzheon-problem-types.yml
+  - type: DataModel
+    url: data-model/alzheon-data-model.yml
+  - type: Lifecycle
+    url: lifecycle/alzheon-lifecycle.yml
+  - type: Conformance
+    url: conformance/alzheon-conformance.yml
+  - type: BlogRSS
+    url: https://alzheon.com/feed/
+- aid: alzheon:alzheon-pages-api
+  name: Alzheon Pages API
+  description: 'Static site pages: science, pipeline, people, patients, careers.'
+  humanURL: https://alzheon.com/media/press-releases/
+  baseURL: https://alzheon.com/wp-json
+  tags:
+  - Pages
+  properties:
+  - type: OpenAPI
+    url: openapi/alzheon-pages-api-openapi.yml
+  - type: Authentication
+    url: authentication/alzheon-authentication.yml
+  - type: Conventions
+    url: conventions/alzheon-conventions.yml
+  - type: ErrorCatalog
+    url: errors/alzheon-problem-types.yml
+  - type: DataModel
+    url: data-model/alzheon-data-model.yml
+  - type: Lifecycle
+    url: lifecycle/alzheon-lifecycle.yml
+  - type: Conformance
+    url: conformance/alzheon-conformance.yml
+  - type: BlogRSS
+    url: https://alzheon.com/feed/
+- aid: alzheon:alzheon-portfolio-api
+  name: Alzheon Portfolio API
+  description: Avada portfolio custom post type.
+  humanURL: https://alzheon.com/media/press-releases/
+  baseURL: https://alzheon.com/wp-json
+  tags:
+  - Portfolio
+  properties:
+  - type: OpenAPI
+    url: openapi/alzheon-portfolio-api-openapi.yml
+  - type: Authentication
+    url: authentication/alzheon-authentication.yml
+  - type: Conventions
+    url: conventions/alzheon-conventions.yml
+  - type: ErrorCatalog
+    url: errors/alzheon-problem-types.yml
+  - type: DataModel
+    url: data-model/alzheon-data-model.yml
+  - type: Lifecycle
+    url: lifecycle/alzheon-lifecycle.yml
+  - type: Conformance
+    url: conformance/alzheon-conformance.yml
+  - type: BlogRSS
+    url: https://alzheon.com/feed/
+- aid: alzheon:alzheon-posts-api
+  name: Alzheon Posts API
+  description: Press releases and in-the-news items published by Alzheon.
+  humanURL: https://alzheon.com/media/press-releases/
+  baseURL: https://alzheon.com/wp-json
+  tags:
+  - Posts
+  properties:
+  - type: OpenAPI
+    url: openapi/alzheon-posts-api-openapi.yml
+  - type: Authentication
+    url: authentication/alzheon-authentication.yml
+  - type: Conventions
+    url: conventions/alzheon-conventions.yml
+  - type: ErrorCatalog
+    url: errors/alzheon-problem-types.yml
+  - type: DataModel
+    url: data-model/alzheon-data-model.yml
+  - type: Lifecycle
+    url: lifecycle/alzheon-lifecycle.yml
+  - type: Conformance
+    url: conformance/alzheon-conformance.yml
+  - type: BlogRSS
+    url: https://alzheon.com/feed/
+- aid: alzheon:alzheon-search-api
+  name: Alzheon Search API
+  description: Cross-content-type search.
+  humanURL: https://alzheon.com/media/press-releases/
+  baseURL: https://alzheon.com/wp-json
+  tags:
+  - Search
+  properties:
+  - type: OpenAPI
+    url: openapi/alzheon-search-api-openapi.yml
+  - type: Authentication
+    url: authentication/alzheon-authentication.yml
+  - type: Conventions
+    url: conventions/alzheon-conventions.yml
+  - type: ErrorCatalog
+    url: errors/alzheon-problem-types.yml
+  - type: DataModel
+    url: data-model/alzheon-data-model.yml
+  - type: Lifecycle
+    url: lifecycle/alzheon-lifecycle.yml
+  - type: Conformance
+    url: conformance/alzheon-conformance.yml
+  - type: BlogRSS
+    url: https://alzheon.com/feed/
+- aid: alzheon:alzheon-taxonomy-api
+  name: Alzheon Taxonomy API
+  description: Categories and tags used to classify content.
+  humanURL: https://alzheon.com/media/press-releases/
+  baseURL: https://alzheon.com/wp-json
+  tags:
+  - Taxonomy
+  properties:
+  - type: OpenAPI
+    url: openapi/alzheon-taxonomy-api-openapi.yml
+  - type: Authentication
+    url: authentication/alzheon-authentication.yml
+  - type: Conventions
+    url: conventions/alzheon-conventions.yml
+  - type: ErrorCatalog
+    url: errors/alzheon-problem-types.yml
+  - type: DataModel
+    url: data-model/alzheon-data-model.yml
+  - type: Lifecycle
+    url: lifecycle/alzheon-lifecycle.yml
+  - type: Conformance
+    url: conformance/alzheon-conformance.yml
+  - type: BlogRSS
+    url: https://alzheon.com/feed/
+- aid: alzheon:alzheon-users-api
+  name: Alzheon Users API
+  description: Publicly listed content authors.
+  humanURL: https://alzheon.com/media/press-releases/
+  baseURL: https://alzheon.com/wp-json
+  tags:
+  - Users
+  properties:
+  - type: OpenAPI
+    url: openapi/alzheon-users-api-openapi.yml
+  - type: Authentication
+    url: authentication/alzheon-authentication.yml
+  - type: Conventions
+    url: conventions/alzheon-conventions.yml
+  - type: ErrorCatalog
+    url: errors/alzheon-problem-types.yml
+  - type: DataModel
+    url: data-model/alzheon-data-model.yml
+  - type: Lifecycle
+    url: lifecycle/alzheon-lifecycle.yml
+  - type: Conformance
+    url: conformance/alzheon-conformance.yml
   - type: BlogRSS
     url: https://alzheon.com/feed/
 maintainers:
@@ -75,6 +327,8 @@ maintainers:
 - FN: APIs.json
   email: info@apis.io
 common:
+- type: Overlay
+  url: overlays/alzheon-content-overlay.yaml
 - type: Website
   url: https://alzheon.com/
 - type: Blog
