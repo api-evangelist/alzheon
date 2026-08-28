@@ -11,6 +11,17 @@ description: 'Alzheon, Inc. is a privately held clinical-stage biopharmaceutical
   or API documentation; its corporate site does serve the standard WordPress REST API
   anonymously, which makes its press releases, science pages and media library machine-readable.'
 url: https://raw.githubusercontent.com/api-evangelist/alzheon/refs/heads/main/apis.yml
+deliveryModel:
+  model: unknown
+  open_source: false
+  commercial: false
+  callable_host: true
+  label: Delivery model not determined — needs a product licence on record
+  confidence: low
+  source:
+  - openapi
+  generated: '2026-08-28'
+  method: derived
 image: https://alzheon.com/wp-content/uploads/2016/03/alzheon-logo2.svg
 x-type: company
 x-source: harvest:secondary-market
