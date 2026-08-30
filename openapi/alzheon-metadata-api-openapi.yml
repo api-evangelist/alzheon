@@ -1,0 +1,160 @@
+openapi: 3.2.0
+info:
+  title: Alzheon Content API (WordPress REST) Metadata API
+  version: wp/v2
+  summary: Read-only access to the press releases, news, pages and media published on alzheon.com.
+  description: 'Alzheon does not operate a product or developer API. Its corporate site, alzheon.com, does however serve the standard WordPress REST API anonymously at `https://alzheon.com/wp-json`, which makes the company''s press releases, in-the-news items, science/pipeline pages, media library and taxonomies machine-readable without a key.
+
+
+    This document was DERIVED by API Evangelist from the provider''s own live route index (`GET https://alzheon.com/wp-json/`) on 2026-07-31. Every path, method, parameter name, type, default, enumeration and parameter description is copied verbatim from that index; nothing was invented. Only routes that were individually probed and observed to return HTTP 200 to an anonymous request are included — administrative routes such as `/wp/v2/settings` and `/wp/v2/plugins` return 401 and are deliberately omitted, as are all write operations, which require WordPress application-password credentials the company does not issue publicly.
+
+
+    This is NOT a first-party API product and Alzheon publishes no developer documentation, SDKs, support channel or terms of use for it. Treat it as an incidental content surface.'
+  contact:
+    name: Alzheon, Inc.
+    url: https://alzheon.com/contact/
+  x-origin:
+  - url: https://alzheon.com/wp-json/
+    format: wordpress-rest-route-index
+    version: wp/v2
+  x-apievangelist-method: derived
+  x-apievangelist-derived-from: https://alzheon.com/wp-json/ (live route index, fetched 2026-07-31)
+  x-apievangelist-note: Incidental CMS content API, not a product API. Derived, not published by Alzheon.
+servers:
+- url: https://alzheon.com/wp-json
+  description: alzheon.com WordPress REST API
+security: []
+tags:
+- name: Metadata
+  description: Registered types, taxonomies and statuses.
+paths:
+  /wp/v2/types:
+    get:
+      operationId: listTypes
+      summary: List the registered post types exposed by the site
+      description: List the registered post types exposed by the site.
+      tags:
+      - Metadata
+      parameters:
+      - name: context
+        in: query
+        required: false
+        schema:
+          type: string
+          default: view
+          enum:
+          - view
+          - embed
+          - edit
+        description: Scope under which the request is made; determines fields present in response.
+      responses:
+        '200':
+          description: Successful response.
+          content:
+            application/json:
+              schema:
+                type:
+                - object
+                - array
+        '400':
+          $ref: '#/components/responses/BadRequest'
+  /wp/v2/taxonomies:
+    get:
+      operationId: listTaxonomies
+      summary: List the registered taxonomies exposed by the site
+      description: List the registered taxonomies exposed by the site.
+      tags:
+      - Metadata
+      parameters:
+      - name: context
+        in: query
+        required: false
+        schema:
+          type: string
+          default: view
+          enum:
+          - view
+          - embed
+          - edit
+        description: Scope under which the request is made; determines fields present in response.
+      - name: type
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Limit results to taxonomies associated with a specific post type.
+      responses:
+        '200':
+          description: Successful response.
+          content:
+            application/json:
+              schema:
+                type:
+                - object
+                - array
+        '400':
+          $ref: '#/components/responses/BadRequest'
+  /wp/v2/statuses:
+    get:
+      operationId: listStatuses
+      summary: List the registered post statuses exposed by the site
+      description: List the registered post statuses exposed by the site.
+      tags:
+      - Metadata
+      parameters:
+      - name: context
+        in: query
+        required: false
+        schema:
+          type: string
+          default: view
+          enum:
+          - view
+          - embed
+          - edit
+        description: Scope under which the request is made; determines fields present in response.
+      responses:
+        '200':
+          description: Successful response.
+          content:
+            application/json:
+              schema:
+                type:
+                - object
+                - array
+        '400':
+          $ref: '#/components/responses/BadRequest'
+components:
+  schemas:
+    Error:
+      type: object
+      description: The WordPress REST error envelope. This API does NOT use RFC 9457 application/problem+json.
+      required:
+      - code
+      - message
+      - data
+      properties:
+        code:
+          type: string
+          description: Machine-readable error code, e.g. rest_post_invalid_id.
+        message:
+          type: string
+          description: Human-readable error message.
+        data:
+          type: object
+          properties:
+            status:
+              type: integer
+              description: HTTP status code.
+  responses:
+    BadRequest:
+      description: Invalid parameter.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  securitySchemes:
+    applicationPassword:
+      type: http
+      scheme: basic
+      description: 'WordPress application passwords (HTTP Basic: username + application password). Advertised by the site''s route index at https://alzheon.com/wp-admin/authorize-application.php. Required only for write and administrative routes, which are not part of this document; all operations here are readable anonymously.'

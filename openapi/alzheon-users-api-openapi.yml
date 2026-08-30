@@ -1,0 +1,317 @@
+openapi: 3.2.0
+info:
+  title: Alzheon Content API (WordPress REST) Users API
+  version: wp/v2
+  summary: Read-only access to the press releases, news, pages and media published on alzheon.com.
+  description: 'Alzheon does not operate a product or developer API. Its corporate site, alzheon.com, does however serve the standard WordPress REST API anonymously at `https://alzheon.com/wp-json`, which makes the company''s press releases, in-the-news items, science/pipeline pages, media library and taxonomies machine-readable without a key.
+
+
+    This document was DERIVED by API Evangelist from the provider''s own live route index (`GET https://alzheon.com/wp-json/`) on 2026-07-31. Every path, method, parameter name, type, default, enumeration and parameter description is copied verbatim from that index; nothing was invented. Only routes that were individually probed and observed to return HTTP 200 to an anonymous request are included — administrative routes such as `/wp/v2/settings` and `/wp/v2/plugins` return 401 and are deliberately omitted, as are all write operations, which require WordPress application-password credentials the company does not issue publicly.
+
+
+    This is NOT a first-party API product and Alzheon publishes no developer documentation, SDKs, support channel or terms of use for it. Treat it as an incidental content surface.'
+  contact:
+    name: Alzheon, Inc.
+    url: https://alzheon.com/contact/
+  x-origin:
+  - url: https://alzheon.com/wp-json/
+    format: wordpress-rest-route-index
+    version: wp/v2
+  x-apievangelist-method: derived
+  x-apievangelist-derived-from: https://alzheon.com/wp-json/ (live route index, fetched 2026-07-31)
+  x-apievangelist-note: Incidental CMS content API, not a product API. Derived, not published by Alzheon.
+servers:
+- url: https://alzheon.com/wp-json
+  description: alzheon.com WordPress REST API
+security: []
+tags:
+- name: Users
+  description: Publicly listed content authors.
+paths:
+  /wp/v2/users:
+    get:
+      operationId: listUsers
+      summary: List authors
+      description: Return a paginated collection of authors published on alzheon.com. Anonymous read access; the total item and page counts are returned in the `X-WP-Total` and `X-WP-TotalPages` response headers and the next/previous pages in the `Link` header.
+      tags:
+      - Users
+      parameters:
+      - name: capabilities
+        in: query
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+        description: Limit result set to users matching at least one specific capability provided. Accepts csv list or single capability.
+      - name: context
+        in: query
+        required: false
+        schema:
+          type: string
+          default: view
+          enum:
+          - view
+          - embed
+          - edit
+        description: Scope under which the request is made; determines fields present in response.
+      - name: exclude
+        in: query
+        required: false
+        schema:
+          type: array
+          default: []
+          items:
+            type: integer
+        description: Ensure result set excludes specific IDs.
+      - name: has_published_posts
+        in: query
+        required: false
+        schema:
+          type:
+          - boolean
+          - array
+          items:
+            type: string
+            enum:
+              post: post
+              page: page
+              attachment: attachment
+              nav_menu_item: nav_menu_item
+              wp_block: wp_block
+              wp_template: wp_template
+              wp_template_part: wp_template_part
+              wp_global_styles: wp_global_styles
+              wp_navigation: wp_navigation
+              wp_font_family: wp_font_family
+              wp_font_face: wp_font_face
+              wpcf7_contact_form: wpcf7_contact_form
+              avada_portfolio: avada_portfolio
+              avada_faq: avada_faq
+        description: Limit result set to users who have published posts.
+      - name: include
+        in: query
+        required: false
+        schema:
+          type: array
+          default: []
+          items:
+            type: integer
+        description: Limit result set to specific IDs.
+      - name: offset
+        in: query
+        required: false
+        schema:
+          type: integer
+        description: Offset the result set by a specific number of items.
+      - name: order
+        in: query
+        required: false
+        schema:
+          type: string
+          default: asc
+          enum:
+          - asc
+          - desc
+        description: Order sort attribute ascending or descending.
+      - name: orderby
+        in: query
+        required: false
+        schema:
+          type: string
+          default: name
+          enum:
+          - id
+          - include
+          - name
+          - registered_date
+          - slug
+          - include_slugs
+          - email
+          - url
+        description: Sort collection by user attribute.
+      - name: page
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 1
+          minimum: 1
+        description: Current page of the collection.
+      - name: per_page
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 10
+          minimum: 1
+          maximum: 100
+        description: Maximum number of items to be returned in result set.
+      - name: roles
+        in: query
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+        description: Limit result set to users matching at least one specific role provided. Accepts csv list or single role.
+      - name: search
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Limit results to those matching a string.
+      - name: search_columns
+        in: query
+        required: false
+        schema:
+          type: array
+          default: []
+          items:
+            enum:
+            - email
+            - name
+            - id
+            - username
+            - slug
+            type: string
+        description: Array of column names to be searched.
+      - name: slug
+        in: query
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+        description: Limit result set to users with one or more specific slugs.
+      - name: who
+        in: query
+        required: false
+        schema:
+          type: string
+          enum:
+          - authors
+        description: Limit result set to users who are considered authors.
+      responses:
+        '200':
+          description: A collection of authors.
+          headers:
+            X-WP-Total:
+              description: Total number of items in the unpaginated collection.
+              schema:
+                type: integer
+            X-WP-TotalPages:
+              description: Total number of pages available at the requested page size.
+              schema:
+                type: integer
+            Link:
+              description: RFC 8288 pagination links (rel="next" / rel="prev").
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Object'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /wp/v2/users/{id}:
+    get:
+      operationId: getUser
+      summary: Get a author
+      description: Return a single author by its numeric identifier.
+      tags:
+      - Users
+      parameters:
+      - name: context
+        in: query
+        required: false
+        schema:
+          type: string
+          default: view
+          enum:
+          - view
+          - embed
+          - edit
+        description: Scope under which the request is made; determines fields present in response.
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+        description: Unique identifier for the user.
+      responses:
+        '200':
+          description: The requested author.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Object'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+components:
+  schemas:
+    Error:
+      type: object
+      description: The WordPress REST error envelope. This API does NOT use RFC 9457 application/problem+json.
+      required:
+      - code
+      - message
+      - data
+      properties:
+        code:
+          type: string
+          description: Machine-readable error code, e.g. rest_post_invalid_id.
+        message:
+          type: string
+          description: Human-readable error message.
+        data:
+          type: object
+          properties:
+            status:
+              type: integer
+              description: HTTP status code.
+    Object:
+      type: object
+      description: A WordPress REST resource. Shape varies by route; the authoritative per-route schema is served by an OPTIONS request against the route.
+      additionalProperties: true
+      properties:
+        id:
+          type: integer
+          description: Unique identifier for the object.
+        slug:
+          type: string
+          description: An alphanumeric identifier for the object unique to its type.
+        link:
+          type: string
+          format: uri
+          description: URL to the object.
+  responses:
+    BadRequest:
+      description: Invalid parameter.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: No object exists with that identifier.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Unauthorized:
+      description: The route requires authenticated WordPress credentials.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  securitySchemes:
+    applicationPassword:
+      type: http
+      scheme: basic
+      description: 'WordPress application passwords (HTTP Basic: username + application password). Advertised by the site''s route index at https://alzheon.com/wp-admin/authorize-application.php. Required only for write and administrative routes, which are not part of this document; all operations here are readable anonymously.'

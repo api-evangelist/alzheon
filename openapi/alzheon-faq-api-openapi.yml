@@ -1,0 +1,406 @@
+openapi: 3.2.0
+info:
+  title: Alzheon Content API (WordPress REST) FAQ API
+  version: wp/v2
+  summary: Read-only access to the press releases, news, pages and media published on alzheon.com.
+  description: 'Alzheon does not operate a product or developer API. Its corporate site, alzheon.com, does however serve the standard WordPress REST API anonymously at `https://alzheon.com/wp-json`, which makes the company''s press releases, in-the-news items, science/pipeline pages, media library and taxonomies machine-readable without a key.
+
+
+    This document was DERIVED by API Evangelist from the provider''s own live route index (`GET https://alzheon.com/wp-json/`) on 2026-07-31. Every path, method, parameter name, type, default, enumeration and parameter description is copied verbatim from that index; nothing was invented. Only routes that were individually probed and observed to return HTTP 200 to an anonymous request are included — administrative routes such as `/wp/v2/settings` and `/wp/v2/plugins` return 401 and are deliberately omitted, as are all write operations, which require WordPress application-password credentials the company does not issue publicly.
+
+
+    This is NOT a first-party API product and Alzheon publishes no developer documentation, SDKs, support channel or terms of use for it. Treat it as an incidental content surface.'
+  contact:
+    name: Alzheon, Inc.
+    url: https://alzheon.com/contact/
+  x-origin:
+  - url: https://alzheon.com/wp-json/
+    format: wordpress-rest-route-index
+    version: wp/v2
+  x-apievangelist-method: derived
+  x-apievangelist-derived-from: https://alzheon.com/wp-json/ (live route index, fetched 2026-07-31)
+  x-apievangelist-note: Incidental CMS content API, not a product API. Derived, not published by Alzheon.
+servers:
+- url: https://alzheon.com/wp-json
+  description: alzheon.com WordPress REST API
+security: []
+tags:
+- name: FAQ
+  description: Avada FAQ custom post type.
+paths:
+  /wp/v2/avada_faq:
+    get:
+      operationId: listFaqs
+      summary: List FAQ entries
+      description: Return a paginated collection of FAQ entries published on alzheon.com. Anonymous read access; the total item and page counts are returned in the `X-WP-Total` and `X-WP-TotalPages` response headers and the next/previous pages in the `Link` header.
+      tags:
+      - FAQ
+      parameters:
+      - name: after
+        in: query
+        required: false
+        schema:
+          type: string
+          format: date-time
+        description: Limit response to posts published after a given ISO8601 compliant date.
+      - name: author
+        in: query
+        required: false
+        schema:
+          type: array
+          default: []
+          items:
+            type: integer
+        description: Limit result set to posts assigned to specific authors.
+      - name: author_exclude
+        in: query
+        required: false
+        schema:
+          type: array
+          default: []
+          items:
+            type: integer
+        description: Ensure result set excludes posts assigned to specific authors.
+      - name: before
+        in: query
+        required: false
+        schema:
+          type: string
+          format: date-time
+        description: Limit response to posts published before a given ISO8601 compliant date.
+      - name: context
+        in: query
+        required: false
+        schema:
+          type: string
+          default: view
+          enum:
+          - view
+          - embed
+          - edit
+        description: Scope under which the request is made; determines fields present in response.
+      - name: exclude
+        in: query
+        required: false
+        schema:
+          type: array
+          default: []
+          items:
+            type: integer
+        description: Ensure result set excludes specific IDs.
+      - name: faq_category
+        in: query
+        required: false
+        schema:
+          type:
+          - object
+          - array
+        description: Limit result set to items with specific terms assigned in the faq_category taxonomy.
+      - name: faq_category_exclude
+        in: query
+        required: false
+        schema:
+          type:
+          - object
+          - array
+        description: Limit result set to items except those with specific terms assigned in the faq_category taxonomy.
+      - name: format
+        in: query
+        required: false
+        schema:
+          type: array
+          items:
+            enum:
+            - standard
+            - aside
+            - chat
+            - gallery
+            - link
+            - image
+            - quote
+            - status
+            - video
+            - audio
+            type: string
+        description: Limit result set to items assigned one or more given formats.
+      - name: include
+        in: query
+        required: false
+        schema:
+          type: array
+          default: []
+          items:
+            type: integer
+        description: Limit result set to specific IDs.
+      - name: menu_order
+        in: query
+        required: false
+        schema:
+          type: integer
+        description: Limit result set to posts with a specific menu_order value.
+      - name: modified_after
+        in: query
+        required: false
+        schema:
+          type: string
+          format: date-time
+        description: Limit response to posts modified after a given ISO8601 compliant date.
+      - name: modified_before
+        in: query
+        required: false
+        schema:
+          type: string
+          format: date-time
+        description: Limit response to posts modified before a given ISO8601 compliant date.
+      - name: offset
+        in: query
+        required: false
+        schema:
+          type: integer
+        description: Offset the result set by a specific number of items.
+      - name: order
+        in: query
+        required: false
+        schema:
+          type: string
+          default: desc
+          enum:
+          - asc
+          - desc
+        description: Order sort attribute ascending or descending.
+      - name: orderby
+        in: query
+        required: false
+        schema:
+          type: string
+          default: date
+          enum:
+          - author
+          - date
+          - id
+          - include
+          - modified
+          - parent
+          - relevance
+          - slug
+          - include_slugs
+          - title
+          - menu_order
+        description: Sort collection by post attribute.
+      - name: page
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 1
+          minimum: 1
+        description: Current page of the collection.
+      - name: per_page
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 10
+          minimum: 1
+          maximum: 100
+        description: Maximum number of items to be returned in result set.
+      - name: search
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Limit results to those matching a string.
+      - name: search_columns
+        in: query
+        required: false
+        schema:
+          type: array
+          default: []
+          items:
+            enum:
+            - post_title
+            - post_content
+            - post_excerpt
+            type: string
+        description: Array of column names to be searched.
+      - name: search_semantics
+        in: query
+        required: false
+        schema:
+          type: string
+          enum:
+          - exact
+        description: How to interpret the search input.
+      - name: slug
+        in: query
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+        description: Limit result set to posts with one or more specific slugs.
+      - name: status
+        in: query
+        required: false
+        schema:
+          type: array
+          default: publish
+          items:
+            enum:
+            - publish
+            - future
+            - draft
+            - pending
+            - private
+            - trash
+            - auto-draft
+            - inherit
+            - request-pending
+            - request-confirmed
+            - request-failed
+            - request-completed
+            - flamingo-spam
+            - email_sent
+            - email_failed
+            - email_scheduled
+            - any
+            type: string
+        description: Limit result set to posts assigned one or more statuses.
+      - name: tax_relation
+        in: query
+        required: false
+        schema:
+          type: string
+          enum:
+          - AND
+          - OR
+        description: Limit result set based on relationship between multiple taxonomies.
+      responses:
+        '200':
+          description: A collection of FAQ entries.
+          headers:
+            X-WP-Total:
+              description: Total number of items in the unpaginated collection.
+              schema:
+                type: integer
+            X-WP-TotalPages:
+              description: Total number of pages available at the requested page size.
+              schema:
+                type: integer
+            Link:
+              description: RFC 8288 pagination links (rel="next" / rel="prev").
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Object'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /wp/v2/avada_faq/{id}:
+    get:
+      operationId: getFaq
+      summary: Get a FAQ entry
+      description: Return a single FAQ entry by its numeric identifier.
+      tags:
+      - FAQ
+      parameters:
+      - name: context
+        in: query
+        required: false
+        schema:
+          type: string
+          default: view
+          enum:
+          - view
+          - embed
+          - edit
+        description: Scope under which the request is made; determines fields present in response.
+      - name: excerpt_length
+        in: query
+        required: false
+        schema:
+          type: integer
+        description: Override the default excerpt length.
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+        description: Unique identifier for the post.
+      responses:
+        '200':
+          description: The requested FAQ entry.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Object'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+components:
+  schemas:
+    Error:
+      type: object
+      description: The WordPress REST error envelope. This API does NOT use RFC 9457 application/problem+json.
+      required:
+      - code
+      - message
+      - data
+      properties:
+        code:
+          type: string
+          description: Machine-readable error code, e.g. rest_post_invalid_id.
+        message:
+          type: string
+          description: Human-readable error message.
+        data:
+          type: object
+          properties:
+            status:
+              type: integer
+              description: HTTP status code.
+    Object:
+      type: object
+      description: A WordPress REST resource. Shape varies by route; the authoritative per-route schema is served by an OPTIONS request against the route.
+      additionalProperties: true
+      properties:
+        id:
+          type: integer
+          description: Unique identifier for the object.
+        slug:
+          type: string
+          description: An alphanumeric identifier for the object unique to its type.
+        link:
+          type: string
+          format: uri
+          description: URL to the object.
+  responses:
+    BadRequest:
+      description: Invalid parameter.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: No object exists with that identifier.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Unauthorized:
+      description: The route requires authenticated WordPress credentials.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  securitySchemes:
+    applicationPassword:
+      type: http
+      scheme: basic
+      description: 'WordPress application passwords (HTTP Basic: username + application password). Advertised by the site''s route index at https://alzheon.com/wp-admin/authorize-application.php. Required only for write and administrative routes, which are not part of this document; all operations here are readable anonymously.'
