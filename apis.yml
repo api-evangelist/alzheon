@@ -314,6 +314,8 @@ apis:
   humanURL: https://alzheon.com/media/press-releases/
   baseURL: https://alzheon.com/wp-json
   tags:
+  - User
+  tags_raw:
   - Users
   properties:
   - type: OpenAPI
