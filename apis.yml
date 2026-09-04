@@ -22,6 +22,19 @@ deliveryModel:
   - openapi
   generated: '2026-08-28'
   method: derived
+accessModel:
+  pricing: unknown
+  onboarding: unknown
+  trial: false
+  try_now: false
+  public: false
+  label: Unknown
+  confidence: low
+  source:
+  - authentication
+  - security
+  generated: '2026-09-03'
+  method: derived
 image: https://alzheon.com/wp-content/uploads/2016/03/alzheon-logo2.svg
 x-type: company
 x-source: harvest:secondary-market
