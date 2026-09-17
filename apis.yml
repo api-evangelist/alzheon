@@ -188,30 +188,6 @@ apis:
     url: conformance/alzheon-conformance.yml
   - type: BlogRSS
     url: https://alzheon.com/feed/
-- aid: alzheon:alzheon-oembed-api
-  name: Alzheon O Embed API
-  description: oEmbed representations of alzheon.com URLs.
-  humanURL: https://alzheon.com/media/press-releases/
-  baseURL: https://alzheon.com/wp-json
-  tags:
-  - oEmbed
-  properties:
-  - type: OpenAPI
-    url: openapi/alzheon-oembed-api-openapi.yml
-  - type: Authentication
-    url: authentication/alzheon-authentication.yml
-  - type: Conventions
-    url: conventions/alzheon-conventions.yml
-  - type: ErrorCatalog
-    url: errors/alzheon-problem-types.yml
-  - type: DataModel
-    url: data-model/alzheon-data-model.yml
-  - type: Lifecycle
-    url: lifecycle/alzheon-lifecycle.yml
-  - type: Conformance
-    url: conformance/alzheon-conformance.yml
-  - type: BlogRSS
-    url: https://alzheon.com/feed/
 - aid: alzheon:alzheon-pages-api
   name: Alzheon Pages API
   description: 'Static site pages: science, pipeline, people, patients, careers.'
@@ -344,6 +320,30 @@ apis:
   properties:
   - type: OpenAPI
     url: openapi/alzheon-users-api-openapi.yml
+  - type: Authentication
+    url: authentication/alzheon-authentication.yml
+  - type: Conventions
+    url: conventions/alzheon-conventions.yml
+  - type: ErrorCatalog
+    url: errors/alzheon-problem-types.yml
+  - type: DataModel
+    url: data-model/alzheon-data-model.yml
+  - type: Lifecycle
+    url: lifecycle/alzheon-lifecycle.yml
+  - type: Conformance
+    url: conformance/alzheon-conformance.yml
+  - type: BlogRSS
+    url: https://alzheon.com/feed/
+- aid: alzheon:alzheon-o-embed-api
+  name: Alzheon o Embed API
+  description: oEmbed representations of alzheon.com URLs.
+  humanURL: https://alzheon.com/media/press-releases/
+  baseURL: https://alzheon.com/wp-json
+  tags:
+  - o Embed
+  properties:
+  - type: OpenAPI
+    url: openapi/alzheon-o-embed-api-openapi.yml
   - type: Authentication
     url: authentication/alzheon-authentication.yml
   - type: Conventions
