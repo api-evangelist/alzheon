@@ -340,6 +340,8 @@ apis:
   humanURL: https://alzheon.com/media/press-releases/
   baseURL: https://alzheon.com/wp-json
   tags:
+  - oEmbed
+  tags_raw:
   - o Embed
   properties:
   - type: OpenAPI
