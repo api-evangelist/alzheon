@@ -1,0 +1,45 @@
+{
+  "provider": "alzheon",
+  "sources": [
+    "_original/alzheon-content-openapi.yml"
+  ],
+  "outputs": [
+    "alzheon-comments-api-openapi.yml",
+    "alzheon-discovery-api-openapi.yml",
+    "alzheon-faq-api-openapi.yml",
+    "alzheon-media-api-openapi.yml",
+    "alzheon-metadata-api-openapi.yml",
+    "alzheon-pages-api-openapi.yml",
+    "alzheon-portfolio-api-openapi.yml",
+    "alzheon-posts-api-openapi.yml",
+    "alzheon-search-api-openapi.yml",
+    "alzheon-taxonomy-api-openapi.yml",
+    "alzheon-users-api-openapi.yml",
+    "alzheon-oembed-api-openapi.yml"
+  ],
+  "archived": [
+    "deleted 1 superseded output(s) from the previous generation"
+  ],
+  "errors": [],
+  "warnings": [],
+  "notes": [
+    "sourced from openapi/_original/ (1 archived document(s)); previously refined output at the top level was skipped rather than re-split",
+    "alzheon-content-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "superseded outputs removed: alzheon-o-embed-api-openapi.yml",
+    "apis.yml register: written (+1 apis, 12 total)"
+  ],
+  "skipped": [
+    "alzheon-comments-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "alzheon-discovery-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "alzheon-faq-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "alzheon-media-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "alzheon-metadata-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "alzheon-o-embed-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "alzheon-pages-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "alzheon-portfolio-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "alzheon-posts-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "alzheon-search-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "alzheon-taxonomy-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "alzheon-users-api-openapi.yml: previously refined output, superseded by openapi/_original/"
+  ]
+}

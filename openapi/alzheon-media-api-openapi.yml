@@ -3,13 +3,7 @@ info:
   title: Alzheon Content API (WordPress REST) Media API
   version: wp/v2
   summary: Read-only access to the press releases, news, pages and media published on alzheon.com.
-  description: 'Alzheon does not operate a product or developer API. Its corporate site, alzheon.com, does however serve the standard WordPress REST API anonymously at `https://alzheon.com/wp-json`, which makes the company''s press releases, in-the-news items, science/pipeline pages, media library and taxonomies machine-readable without a key.
-
-
-    This document was DERIVED by API Evangelist from the provider''s own live route index (`GET https://alzheon.com/wp-json/`) on 2026-07-31. Every path, method, parameter name, type, default, enumeration and parameter description is copied verbatim from that index; nothing was invented. Only routes that were individually probed and observed to return HTTP 200 to an anonymous request are included — administrative routes such as `/wp/v2/settings` and `/wp/v2/plugins` return 401 and are deliberately omitted, as are all write operations, which require WordPress application-password credentials the company does not issue publicly.
-
-
-    This is NOT a first-party API product and Alzheon publishes no developer documentation, SDKs, support channel or terms of use for it. Treat it as an incidental content surface.'
+  description: Alzheon does not operate a product or developer API.
   contact:
     name: Alzheon, Inc.
     url: https://alzheon.com/contact/
@@ -314,6 +308,21 @@ paths:
           $ref: '#/components/responses/Unauthorized'
 components:
   schemas:
+    Object:
+      type: object
+      description: A WordPress REST resource. Shape varies by route; the authoritative per-route schema is served by an OPTIONS request against the route.
+      additionalProperties: true
+      properties:
+        id:
+          type: integer
+          description: Unique identifier for the object.
+        slug:
+          type: string
+          description: An alphanumeric identifier for the object unique to its type.
+        link:
+          type: string
+          format: uri
+          description: URL to the object.
     Error:
       type: object
       description: The WordPress REST error envelope. This API does NOT use RFC 9457 application/problem+json.
@@ -334,22 +343,13 @@ components:
             status:
               type: integer
               description: HTTP status code.
-    Object:
-      type: object
-      description: A WordPress REST resource. Shape varies by route; the authoritative per-route schema is served by an OPTIONS request against the route.
-      additionalProperties: true
-      properties:
-        id:
-          type: integer
-          description: Unique identifier for the object.
-        slug:
-          type: string
-          description: An alphanumeric identifier for the object unique to its type.
-        link:
-          type: string
-          format: uri
-          description: URL to the object.
   responses:
+    Unauthorized:
+      description: The route requires authenticated WordPress credentials.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
     BadRequest:
       description: Invalid parameter.
       content:
@@ -358,12 +358,6 @@ components:
             $ref: '#/components/schemas/Error'
     NotFound:
       description: No object exists with that identifier.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    Unauthorized:
-      description: The route requires authenticated WordPress credentials.
       content:
         application/json:
           schema:
