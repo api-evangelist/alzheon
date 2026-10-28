@@ -64,57 +64,92 @@
 > Full detail: **[Where this data comes from](https://apievangelist.com/about/where-our-data-comes-from)**
 <!-- API-EVANGELIST-PROVENANCE:END -->
 
-Alzheon, Inc. is a privately held clinical-stage biopharmaceutical company founded in 2013
-and headquartered in Framingham, Massachusetts, developing oral small-molecule therapeutics
-and diagnostics for Alzheimer's disease and other neurodegenerative disorders. Its lead
-candidate, valiltramiprosate (ALZ-801), is a valine-conjugated prodrug of tramiprosate that
-blocks formation of neurotoxic soluble beta-amyloid oligomers; it holds FDA Fast Track
-designation and completed the pivotal APOLLOE4 Phase 3 trial in APOE4/4 homozygotes with
-early Alzheimer's disease.
+Alzheon, Inc. is a privately held clinical-stage biopharmaceutical company founded in 2013 and headquartered at 111 Speen Street, Framingham, Massachusetts, developing oral small-molecule therapeutics and diagnostics for Alzheimer's disease and other neurodegenerative disorders. Its lead candidate, valiltramiprosate (ALZ-801) — a valine-conjugated prodrug of tramiprosate that blocks the formation of neurotoxic soluble beta-amyloid oligomers — has FDA Fast Track designation and completed the pivotal APOLLOE4 Phase 3 trial in APOE4/4 homozygotes with early Alzheimer's disease. Alzheon operates no product or developer API and publishes no developer portal, SDKs or API documentation; its corporate site does serve the standard WordPress REST API anonymously, which makes its press releases, science pages and media library machine-readable.
 
-- https://alzheon.com/
-- https://forgeglobal.com/alzheon_stock/ (secondary-market listing — the original harvest source)
+**Areas:** Company · Biotechnology · Pharmaceuticals · Life Sciences · Clinical Trials · Alzheimers Disease · Neurology · Drug Development · Healthcare · Private Company
 
-## API posture
+## Alzheon on APIs.io
 
-**Alzheon operates no product or developer API.** There is no developer portal, no API
-documentation, no SDKs, no CLI, no keys, no sandbox, no Postman collection, no status page,
-no changelog, no MCP server and no A2A agent card. The `api.`, `developer.`, `docs.`,
-`status.`, `trust.`, `security.` and `mcp.` subdomains do not resolve. No `/.well-known/`
-document is served — every canonical path was probed and returned 404. The probe log is in
-[`well-known/alzheon-well-known.yml`](well-known/alzheon-well-known.yml).
+Everything profiled for Alzheon is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/alzheon/](https://apis.io/providers/alzheon/)** — or go straight to one of the APIs or properties below.
 
-The one machine-readable contract the company serves is the standard **WordPress REST API**
-on its corporate site, readable anonymously at `https://alzheon.com/wp-json`. It exposes 224
-press releases and news items, 25 science/people/patients pages, 624 media items, taxonomies,
-cross-content search and oEmbed. This is an incidental content-management surface, not a
-first-party API product: Alzheon publishes no documentation, credentials or terms for it, and
-all write and administrative routes return 401.
+### APIs (1)
 
-## Artifacts
+- [Alzheon Website (WordPress REST)](https://apis.io/apis/alzheon/alzheon-com-website-wordpress-rest/) — The public WordPress REST API (wp-json) of the Alzheon website at alzheon.com: the route index of the site's content management system, catalogued as one…
 
-| Artifact | File | Method |
-|---|---|---|
-| OpenAPI 3.1 (24 verified anonymous read operations) | [`openapi/alzheon-content-openapi.yml`](openapi/alzheon-content-openapi.yml) | derived from the live route index |
-| Overlay of API Evangelist enhancements | [`overlays/alzheon-content-overlay.yaml`](overlays/alzheon-content-overlay.yaml) | generated |
-| Authentication profile | [`authentication/alzheon-authentication.yml`](authentication/alzheon-authentication.yml) | derived |
-| API conventions | [`conventions/alzheon-conventions.yml`](conventions/alzheon-conventions.yml) | derived |
-| Error catalog | [`errors/alzheon-problem-types.yml`](errors/alzheon-problem-types.yml) | derived |
-| Data model | [`data-model/alzheon-data-model.yml`](data-model/alzheon-data-model.yml) | derived |
-| Lifecycle | [`lifecycle/alzheon-lifecycle.yml`](lifecycle/alzheon-lifecycle.yml) | derived |
-| Conformance | [`conformance/alzheon-conformance.yml`](conformance/alzheon-conformance.yml) | derived |
-| Well-known probe log | [`well-known/alzheon-well-known.yml`](well-known/alzheon-well-known.yml) | probed |
-| Domain security | [`security/alzheon-domain-security.yml`](security/alzheon-domain-security.yml) | probed |
-| Agent skills | [`skills/_index.yml`](skills/_index.yml) | generated |
-| llms.txt | [`llms/alzheon-llms.txt`](llms/alzheon-llms.txt) | generated |
+### Published properties
 
-Not present, because the underlying thing does not exist: `packages/` (no first-party
-library on npm, PyPI or any registry; no GitHub organisation), `mcp/`, `a2a/`, `asyncapi/`,
-`cli/`, `components/`, `sandbox/`, `changelog/`, `scopes/` (no OAuth), `grpc/`, and the
-vulnerability-disclosure and trust-center artifacts (probed; neither published).
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
 
-## Note on content
+#### Collections (1)
 
-Valiltramiprosate / ALZ-801 is an **investigational** agent that is not approved for
-marketing. Content harvested through this repository must not be presented as approved
-medical advice or as a claim of efficacy.
+Postman and Open Collection request collections.
+
+- [Moved to /providers/alzheon/](https://apis.io/collections/alzheon/open-alzheon-content/)
+
+#### Security (2)
+
+Authentication, trust centre, and vulnerability disclosure.
+
+- [Alzheon Authentication](https://apis.io/security/alzheon/alzheon-authentication/)
+- [Alzheon Domain Security](https://apis.io/security/alzheon/alzheon-domain-security/)
+
+## Where to find this API
+
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
+
+- [Website](https://alzheon.com/)
+- [Blog](https://alzheon.com/media/press-releases/)
+- [Privacy policy](https://alzheon.com/privacy-policy/)
+
+## API Evangelist rating
+
+**Kin Score 14.2** — emerging · rubric 0.24.0 · scored 2026-10-17
+
+| Facet | Score |
+|---|---|
+| Discoverability | 58.0 |
+| Contract quality | 0.0 |
+| Contract governance | 4.5 |
+| Operational transparency | 0.0 |
+| Developer ergonomics | 25.6 |
+| Access clarity | 10.5 |
+
+**Agent readiness 4.1** — human-only
+
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | — |
+| Agentic Access | — |
+| Reversibility Documented | — |
+| MCP Server | — |
+| Auth Clarity | bearer (partial credit) |
+| Idempotency | — |
+| Error Semantics | derived (partial credit) |
+| OpenAPI Examples | — |
+| Rate Limit Signal | — |
+| Event Surface Described | — |
+| Agent Skills | derived (partial credit) |
+| Well Known Catalog | — |
+| Consent Identity | — |
+| Agent Card | — |
+| Dry Run Mode | — |
+| Delegated Identity | — |
+| Protected Resource Metadata | — |
+| Dynamic Client Registration | — |
+| Agentic Commerce | — |
+
+**Regulatory alignment 16.4** — Health
+
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/alzheon/](https://apis.io/providers/alzheon/).
+
+## How this profile is made
+
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for Alzheon: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/alzheon/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
